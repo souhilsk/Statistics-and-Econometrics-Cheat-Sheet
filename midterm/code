@@ -1,0 +1,1030 @@
+\documentclass[a4paper, landscape]{article}
+\input{src/default.tex}
+
+
+
+% Global setttings
+\def\subject{Econometrics and Statistics}
+\def\semester{Spring 2025}
+\def\author{Souhil Khiat}
+\def\cols{3}
+
+
+\cheatsheet{
+
+\section{Core Concepts}
+
+
+
+
+\subsection{General Distributions: Discrete and Continuous}
+
+
+\textbf{Discrete random variable} \\
+$X$: takes countable values. \\
+PDF $p_X(x) = \mathbb{P}(X = x)$, CDF $F_X(x) = \mathbb{P}(X \le x)$.\\
+$\mathbb{E}[X] = \sum_x x\, p_X(x).$\\
+$\mathbb{V}ar[X] = \sum_x (x^2\, p_X(x)) - [\sum_x x\, p_X(x)]^2.$\\
+
+
+\textbf{Continuous random variable}\\
+$X$: has a probability density function $f_X(x)$ with $F_X(x) = \int_{-\infty}^{x} f_X(t)\,dt$. \\
+$\mathbb{E}[X] = \int_{-\infty}^{\infty} x\, f_X(x)\, dx.$\\
+$\mathbb{V}\mathrm{ar}[X] = \int_{-\infty}^{\infty} x^2\, f_X(x)\, dx - \left(\int_{-\infty}^{\infty} x\, f_X(x)\, dx\right)^2$
+
+    
+\textbf{Joint distributions: } \\
+CDF:  \\
+$F_{XY}(a,b)=\mathbb{P}(X \le a,Y \le b)$ \\
+PDF: \\
+$\mathbb{P}(a < X \le b,c < Y \le d) = \int_{a}^{b}\int_{c}^{d}f_{XY}(x,y)dx dy, \forall a \le b,\;c \le d.$ \\
+
+\textbf{Conditional distribution} \\
+PDF: \\ 
+$f_{X|Y}(x,y)=$
+$f_{X|Y}(x,y)=\frac{f_{XY}(x,y)}{f_Y(y)}$ \\
+
+\textbf{Conditional CDF given a quantile}
+We know that $X > q_\alpha$\\
+Let $q_\alpha$ be the $\alpha$-quantile, i.e. $F(q_\alpha) = \alpha$.
+
+$F_\alpha(x) = \mathbb{P}(X < x \mid X > q_\alpha) =  \frac{F(x) - F(q_\alpha)}{1 - F(q_\alpha)} \cdot \mathbf{1}_{\{x \geq q_\alpha\}}$
+
+$f_\alpha(x) = \frac{f(x)}{1 - F(q_\alpha)} \cdot \mathbf{1}_{\{x \geq q_\alpha\}}$
+
+
+\subsection{Arrangement and Combinations: }
+\textbf{Arrangement (Permutation):} Number of ways to choose and order $k$ elements from $n$ distinct objects:\\
+$P_n^k = \frac{n!}{(n - k)!}$ \quad (also written $A(n, k)$ or ${}^nP_k$)
+
+\textbf{Permutation (Full):} Special case when $k = n$:\\
+$n!$ total ways to order $n$ distinct elements.
+
+\textbf{Combination:} Number of ways to choose $k$ elements from $n$ without regard to order:\\
+$C_n^k = \binom{n}{k} = \frac{n!}{k!(n - k)!}$
+
+\textbf{Key identities:}\\
+- $\binom{n}{k} = \binom{n}{n - k}$\\
+- Total number of subsets of size $k$: $\sum_{k=0}^n \binom{n}{k} = 2^n$
+
+
+\subsection{Probability rules: }
+
+\begin{itemize}[leftmargin=*]
+
+  \item $\mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \cap B)$
+
+  \item If $A$ and $B$ are disjoint: $\mathbb{P}(A \cap B) = 0$
+
+  \item \textbf{Conditional probability:} 
+  $\mathbb{P}(A \mid B) = \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$, if $\mathbb{P}(B) > 0$
+
+  \item \textbf{Law of Total Probability (Discrete):} 
+  $\mathbb{P}(B) = \sum_i \mathbb{P}(B \mid A_i)\,\mathbb{P}(A_i)$  
+  (where $\{A_i\}$ is a partition of the sample space)
+
+  \item \textbf{Bayes' Rule (Discrete):} 
+  $\mathbb{P}(A \mid B) = \frac{\mathbb{P}(B \mid A)\,\mathbb{P}(A)}{\mathbb{P}(B)}$
+
+  \item \textbf{Joint Probability Decomposition:} 
+  $\mathbb{P}(A \cap B) = \mathbb{P}(A \mid B) \cdot \mathbb{P}(B)$
+
+    \item \textbf{Independence:} $A \perp B \;\Leftrightarrow\; \mathbb{P}(A \cap B) = \mathbb{P}(A)\,\mathbb{P}(B)$ \\
+    \quad $\Rightarrow$ $\mathbb{P}(A \mid B) = \mathbb{P}(A)$
+    
+    \item \textbf{Chain rule for multiple events:} \\
+    $\mathbb{P}(A \cap B \cap C) = \mathbb{P}(A) \cdot \mathbb{P}(B \mid A) \cdot \mathbb{P}(C \mid A, B)$
+      
+
+  \item \textbf{Continuous version (densities):}
+  \begin{itemize}
+    \item $f_{U \mid W}(u \mid w) = \frac{f_{UW}(u, w)}{f_W(w)}$, if $f_W(w) > 0$
+    \item $f_{UW}(u, w) = f_{U \mid W}(u \mid w) \cdot f_W(w)$
+  \end{itemize}
+
+  \item \textit{Note: Replace $\mathbb{P}$ with $f$ for densities in the continuous case.}
+
+\end{itemize}
+
+
+
+
+
+\subsection{Expectation: }
+\begin{itemize}[leftmargin=*]
+
+  \item $\mathbb{E}[aX + b] = a\,\mathbb{E}[X] + b,$
+  \item $\mathbb{E}\Bigl(\sum_{i} X_i\Bigr) = \sum_{i} \mathbb{E}[X_i].$ \text{(Holds regardless of whether $X_i$ are independent)}
+
+  \item 
+    \textbf{If $X$ and $Y$ are independent:} $\mathbb{E}[XY] = \mathbb{E}[X]\,\mathbb{E}[Y]$. \\
+    More generally, for any functions $g,h$:
+    $\mathbb{E}(g(X)h(Y)) = \mathbb{E}[g(X)]\,\mathbb{E}[h(Y)]$.
+  
+  \item \textbf{Law of Iterated Expectations:} $\mathbb{E}[X] = \mathbb{E}\bigl[\mathbb{E}[X \mid Y]\bigr]$ \textcolor{red}{\tiny $\mathbb{E}(X|Y)$ is a function of Y!, $\mathbb{V}ar(X) < \infty$}
+
+
+
+  \item \textbf{Jensen’s Inequality (for convex/concave $g$):} \\
+  $g(\mathbb{E}[X]) \;\le\; \mathbb{E}[g(X)]$
+    \;\;\;\;\text{if $g$ is convex}, \\
+    $g(\mathbb{E}[X]) \;\ge\; \mathbb{E}[g(X)]
+    \;\;\;\;\text{if $g$ is concave}.$
+
+  \item \textbf{Handling Transformations:}  
+  For $Y=g(X)$, \\
+  $\mathbb{E}[Y] = \int g(x)\,f_X(x)\,dx \;\text{(continuous)} ,\\
+  \quad \mathbb{E}[Y] = \sum_x g(x)\,p_X(x) \;\text{(discrete)}.
+
+\end{itemize}\\
+
+
+\subsection{Variance: }
+\begin{itemize}[leftmargin=*]
+
+  \item $\mathrm{Var}(X) = \mathbb{E}[(X - \mathbb{E}[X])^2] = \mathbb{E}[X^2] - (\mathbb{E}[X])^2.$
+
+  \item $\mathrm{Var}(aX + b) = a^2\,\mathrm{Var}(X).$
+
+  \item $\mathrm{Var}\left(\sum_{i=1}^n X_i\right) = \sum_{i=1}^n \mathrm{Var}(X_i) + 2 \sum_{i < j} \mathrm{Cov}(X_i, X_j).$
+
+  \item \textbf{If $X$ and $Y$ are independent:} $\mathrm{Var}(X + Y) = \mathrm{Var}(X) + \mathrm{Var}(Y).$\\
+  More generally, if $\mathrm{Cov}(X, Y) = 0$, then this still holds.
+
+
+  \item \textbf{Law of Total Variance:}
+    $\mathrm{Var}(X) 
+    \;=\; \mathbb{E}[\mathrm{Var}(X \mid Y)]
+    \;+\; \mathrm{Var}\bigl(\mathbb{E}[X \mid Y]\bigr).$ \textcolor{red}{\tiny$\mathbb{V}ar(X) < \infty$}
+
+  \item \textbf{Variance of sample mean:} For $X_1, \dots, X_n$ i.i.d. with variance $\sigma^2$,\\
+  $\mathrm{Var}(\bar{X}) = \frac{\sigma^2}{n}$, \quad
+  $\mathrm{Var}(X_1 + \dots + X_n) = n\,\sigma^2.$
+
+  \item \textbf{Conditional scaling (e.g. Gaussian case):} \\
+  If $X \mid Y \sim \mathcal{N}(\mu(Y), \sigma^2(Y))$, then\\
+  $\mathrm{Var}(X) = \mathbb{E}[\sigma^2(Y)] + \mathrm{Var}(\mu(Y)).$
+
+
+  \item \textbf{Population variance:} 
+  $\sigma^2 = \mathbb{E}[(X - \mu)^2]$
+
+  \item \textbf{Sample variance (unbiased):} 
+  $\hat{\sigma}^2 = \frac{1}{n - 1} \sum_{i=1}^n (X_i - \bar{X})^2$ \\
+  \textcolor{blue}{Unbiased estimator of $\sigma^2$ when $X_i$ i.i.d. with finite variance.}
+
+\end{itemize}
+
+\subsection{Covariance: }
+
+\begin{itemize}[leftmargin=*]
+
+  \item 
+  $\mathrm{Cov}(X, Y) = \mathbb{E}[(X - \mathbb{E}[X])(Y - \mathbb{E}[Y])] 
+  = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y].$
+
+  \item \textbf{Properties:}
+  \begin{itemize}[leftmargin=1em]
+    \item $\mathrm{Cov}(X, X) = \mathrm{Var}(X)$
+    \item $\mathrm{Cov}(X, Y) = \mathrm{Cov}(Y, X)$
+    \item $\mathrm{Cov}(aX + b, Y) = a\,\mathrm{Cov}(X, Y)$
+    \item $\mathrm{Cov}(X + Z, Y) = \mathrm{Cov}(X, Y) + \mathrm{Cov}(Z, Y)$
+  \end{itemize}
+
+  \item \textbf{Cauchy-Schwarz Inequality:} $|\mathrm{Cov}(X, Y)| \le \sqrt{\mathrm{Var}(X) \cdot \mathrm{Var}(Y)}$
+
+\end{itemize}
+
+
+\subsection{Correlation: }
+\begin{itemize}[leftmargin=*]
+
+  \item \textbf{Correlation coefficient:}$\rho_{XY} = \frac{\mathrm{Cov}(X, Y)}{\sqrt{\mathrm{Var}(X)\,\mathrm{Var}(Y)}}$\\
+  Measures the linear association between $X$ and $Y$. $\rho \in [-1, 1]$.
+
+  \item \textbf{Properties:}
+  \begin{itemize}
+    \item $\rho_{XY} = \rho_{YX}$
+    \item $\rho_{X,Y} = 0$ does not imply independence
+    \item $\rho_{X,Y} = \pm1$ ⇔ perfect linear relationship
+    \item $|\rho_{X,Y}| \le 1$ (from Cauchy-Schwarz inequality)
+  \end{itemize}
+
+  \item \textbf{Sample correlation:} $r_{XY} = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^n (x_i - \bar{x})^2} \cdot \sqrt{\sum_{i=1}^n (y_i - \bar{y})^2}}$
+
+  \item \textbf{Partial correlation:}  
+  The correlation between residuals of $y$ and $z$ after removing the effect of $X$:
+  $$\mathbb{C}orr(Y,Z|X) = r_{yz \cdot X} = \frac{z^*{}' y^*}{\sqrt{z^*{}' z^*} \cdot \sqrt{y^*{}' y^*}}$$
+  where $y^*$ and $z^*$ are residuals from regressing $y$ and $z$ on $X$, respectively.
+
+\end{itemize}
+
+
+\subsection{Independance: }
+Two random variables are independent iff the joint c.d.f. of X and Y is given by:
+$f_{XY}(x,y) = f_{X}(x) \times f_{Y}(y)$ \\
+\text{or equivalently} \\
+$F_{XY}(x,y) = F_{X}(x) \times F_{Y}(y)$ \\
+\textcolor{red}{The following observations are not sufficient to conclude independance}
+Observations If \(X\) and \(Y\) are independent  :
+\begin{enumerate}[leftmargin=*]
+    \item \(f_{X|Y}(x,y)=f_{X}(x)\). 
+    \item \(\mathbb{E}(X|Y)=\mathbb{E}(X)\) 
+    \item \(\mathbb{E}(g(X)|Y)=\mathbb{E}(g(X))\), where \(g\) is any function.
+    \item\(\mathbb{E}(XY)=\mathbb{E}(X)\mathbb{E}(Y)\) 
+    \item\(\mathbb{E}(g(X)h(Y))=\mathbb{E}(g(X))\mathbb{E}(h(Y))\) 
+    \item \(\mathbb{C}ov(X, Y)=0\). 
+    \item $\mathrm{Var}(X + Y) = \mathrm{Var}(X) + \mathrm{Var}(Y).$\\
+\end{enumerate}
+
+
+
+
+
+\subsection{Common Discrete Laws}
+
+
+\textbf{Uniform(a, b):} \\
+A random variable $X$ is said to follow a discrete uniform law on $\{a, a+1, \ldots, b\}$ if: \\
+$\mathbb{P}(X = k) \;=\; \frac{1}{\,b - a + 1\,} \text{for } k = a, a+1, \ldots, b$.\\
+$\mathbb{E}[X] \;=\; \frac{a + b}{2},
+\mathrm{Var}(X) \;=\; \frac{\bigl((b - a + 1)^2 - 1\bigr)}{12}.$\\
+
+\textbf{Bernoulli($p$):} 1 experience with 2 possibles outcomes\\
+$\mathbb{P}(X=1)=p$, $\mathbb{P}(X=0)=1-p$\\
+$\mathbb{E}[X]=p\\
+\mathrm{Var}(X)=p(1-p).$\\
+
+\textbf{Binomial($n, p$):} number of successes in $n$ independent Bernoulli($p$) trials.\\
+ 
+$   \mathbb{P}(X=k) = {n \choose k}p^k(1-p)^{\,n-k}, \\
+    \mathbb{E}[X]=np, \\
+    \mathrm{Var}(X)=np(1-p).$\\
+
+\textbf{Geometric($p$):} number of trials (Bernoulli($p$)) needed until first success.
+
+$    \mathbb{P}(X=k) = (1-p)^{k-1}p, \\
+    \mathbb{E}[X]=\frac{1}{p}, \\
+    \mathrm{Var}(X) = \frac{1-p}{p^2}.$
+
+
+\textbf{Hypergeometric($N, K, n$):} $N$ items total, $K$ successes in population. Draw $n$ items \emph{without replacement}, let $X$ be \# of successes drawn.\\
+$    \mathbb{P}(X=k) = \frac{\binom{K}{k}\,\binom{N-K}{n-k}}{\binom{N}{n}},\\
+    \mathbb{E}[X] = n\frac{K}{N},\\
+    \mathrm{Var}(X) = n\frac{K}{N}\Bigl(1-\frac{K}{N}\Bigr)\frac{N-n}{N-1}.$\\
+
+\textbf{Poisson($\lambda$):} counts the number of events in fixed time/space if events happen at constant rate $\lambda$ independently.\\
+$    \mathbb{P}(X=k) = \frac{\lambda^k}{k!} e^{-\lambda}, \\
+    \quad
+    \mathbb{E}[X]=\lambda, 
+    \quad
+    \mathrm{Var}(X)=\lambda.$ \\
+    If 2 RV's follow a poisson law and are independant, the sum of these 2 RV's will follow a poisson law with $\lambda = \lambda_1 + \lambda_2$
+
+
+\subsection{Common Continuous Laws}
+\textbf{Uniform($a,b$):} $X\sim \mathrm{Unif}(a,b)$ \\
+$    f_X(x) = \frac{1}{b-a} \mathbf{1}_{\{a \le x \le b\}}, \\
+    \mathbb{E}[X]=\frac{a+b}{2}, \\
+    \mathrm{Var}(X)=\frac{(b-a)^2}{12}.$\\
+
+\textbf{Exponential($\lambda$):} $X\sim \mathrm{Exp} (\lambda)$\\
+$    f_X(x) = \lambda e^{-\lambda x}, \quad x\ge 0,\\
+    \mathbb{E}[X] = \frac{1}{\lambda}, \\
+    \mathrm{Var}(X)= \frac{1}{\lambda^2}.$\\
+  \textit{Memoryless property:} $\mathbb{P}(X > s+t \,\mid\, X > s) = \mathbb{P}(X > t).$\\
+
+\textbf{Normal($\mu, \sigma^2$):} $X\sim \mathcal{N}(\mu,\sigma^2)$\\
+$    f_X(x) = \frac{1}{\sqrt{2\pi}\,\sigma} exp(-\frac{(x-\mu)^2}{2\sigma^2}),\\
+    \mathbb{E}[X]=\mu,\\
+    \mathrm{Var}(X)=\sigma^2.$\\
+    \(\psi_3\) = Skewness = 0\\
+    \(\psi_4\) = Kurtosis = 3 \\
+
+\textbf{Chi-squared($\chi^2_\nu$):} If $Z_i \sim \mathcal{N}(0,1)$ i.i.d., then 
+$\chi^2_\nu = \sum_{i=1}^\nu Z_i^2 \sim \chi^2(\nu)$
+$\mathbb{E}[X]=\nu, \quad \mathrm{Var}(X)=2\nu.$\\
+
+\textbf{Student($t_\nu$):} $T = \frac{Z}{\sqrt{U/\nu}}$ with $Z\sim \mathcal{N}(0,1)$ and $U\sim \chi^2_\nu$ independent. \\
+$    \mathbb{E}[T]=0 \text{ (if $\nu>1$, undefined otherwise)}, \\
+    \mathrm{Var}(T)=\frac{\nu}{\nu-2} \text{ (if $\nu>2$)}$, undefined if $\nu$ = 1
+    and infinite if $\nu$ = 2).\\
+
+\textbf{Fisher($F_{d_1,d_2}$):} ratio of scaled chi-squared variables. Often used in ANOVA or regression tests.\\
+$\text{If } U_1 \sim \chi^2_{d_1}, \quad U_2 \sim \chi^2_{d_2}
+\quad \text{(independent), then} \\
+F \;=\; \frac{\tfrac{U_1}{d_1}}{\tfrac{U_2}{d_2}}
+\;\sim\; F_{d_1,d_2}.$
+
+$\mathbb{E}[F] \;=\;
+\begin{cases}
+\dfrac{d_2}{\,d_2 - 2\,}, & \text{if } d_2 > 2,\\
+\text{undefined}, & \text{if } d_2 \le 2,
+\end{cases}\\$
+
+$\mathrm{Var}(F) \;=\;
+\begin{cases}
+\dfrac{2\,d_2^2\,(d_1 + d_2 - 2)}{\,d_1\,(d_2 - 2)^2\,(d_2 - 4)\,}, 
+& \text{if } d_2 > 4,\\
+\text{undefined}, 
+& \text{if } d_2 \le 4.
+\end{cases}$\\
+
+
+
+
+
+\subsection{Moments}
+\textbf{Central moment of order $k$:}  
+$\mu_k = \mathbb{E}[(Y - \mu)^k]$, where $\mu = \mathbb{E}[Y]$
+
+\textbf{Standardized moment of order $k$:}  \\
+$\psi_k = \frac{\mu_k}{\left(\mathbb{V}\mathrm{ar}(Y)\right)^{k/2}} = \frac{\mathbb{E}[(Y - \mu)^k]}{\left(\mathbb{V}\mathrm{ar}(Y)\right)^{k/2}}
+$
+
+\begin{itemize}[leftmargin=*]
+  \item $\psi_1 = 0$ for any distribution (centered)
+  \item $\psi_2 = 1$ by definition (variance standardized)
+  \item $\psi_3$ = \textbf{Skewness} = 0 for symmetric distributions (e.g. Gaussian)
+  \item $\psi_4$ = \textbf{Kurtosis} = 3 for Gaussian
+\end{itemize}
+
+\textbf{Excess kurtosis:} $\psi_4 - 3$  
+$\rightarrow$ Measures heaviness of tails vs. normal distribution.
+
+\textbf{Sample central moment of order $k$:}  
+$m_k = \frac{1}{n} \sum_{i=1}^n (y_i - \bar{y})^k$
+
+\textbf{Standardized sample moment:}  \\
+$g_k = \frac{m_k}{(m_2)^{k/2}} = \frac{\frac{1}{n} \sum_{i=1}^n (y_i - \bar{y})^k}{\left[\frac{1}{n} \sum_{i=1}^n (y_i - \bar{y})^2\right]^{k/2}}$
+
+\subsection{Law of Large Numbers and Central Limit Theorem}
+
+\textbf{LLN (Law of Large Numbers):} \\
+If $X_1, \dots, X_n$ are i.i.d. with mean $\mu$, then: 
+$\bar{X}_n \xrightarrow{p} \mu$
+
+\textbf{Key Points:}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Consistency:} $\bar{X}_n$ is a consistent estimator of $\mu$
+  \item \textbf{Unbiasedness:} $\mathbb{E}[\bar{X}_n] = \mu$
+  \item \textbf{Variance:} $\mathrm{Var}(\bar{X}_n) = \frac{\sigma^2}{n}$
+\end{itemize}
+
+\textbf{Basic CLT (sample mean):} \\ 
+If \( X_i \overset{\text{i.i.d.}}{\sim} (\mu, \sigma^2) \), then:  \\
+$\sqrt{n}(\bar{X}_n - \mu) \xrightarrow{d} \mathcal{N}(0, Var(X_i))
+\quad \Rightarrow \quad
+\bar{X}_n \approx \mathcal{N}\left(\mu, \frac{Var(X_i)}{n}\right) \text{ for large } n$\\
+{\tiny \textcolor{red}{Estimation error shrinks at rate $\sqrt{n}$ (convergence in distribution).}}\\
+
+\textbf{CLT for sample sum:}  
+$S_n = \sum_{i=1}^n X_i = n\bar{X}\approx \mathcal{N}(n\mu, n\sigma^2)$\\
+
+\textbf{CLT for linear combinations:}  
+If \( a_i \in \mathbb{R} \), and \( X_i \overset{\text{i.i.d.}}{\sim} (\mu, \sigma^2) \), then:  
+$\sum_{i=1}^n a_i X_i \xrightarrow{d} \mathcal{N}\left(\sum a_i \mu, \sum a_i^2 \sigma^2\right)$\\
+
+\textbf{CLT for difference of sample means:}  
+If \( \bar{X} \) and \( \bar{Y} \) are independent:
+$\bar{X} - \bar{Y} \sim \mathcal{N}(\mu_1 - \mu_2, \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2})$\\
+
+\textbf{Multivariate CLT:} \\
+If $X_i \in \mathbb{R}^m$ i.i.d., with mean $\boldsymbol{\mu}$ and covariance matrix $\Sigma$ (positive definite), then:
+$\sqrt{n}(\bar{X}_n - \boldsymbol{\mu}) \xrightarrow{d} \mathcal{N}(\mathbf{0}, \Sigma)$
+
+\subsection{Types of Convergence}
+
+\textbf{1. Convergence in Probability:} $X_n \xrightarrow{p} X$
+\begin{itemize}[leftmargin=*]
+  \item $\forall \varepsilon > 0$: $\mathbb{P}(|X_n - X| > \varepsilon) \to 0$ as $n \to \infty$
+  \item Used for consistency (e.g., $\hat{\theta}_n \xrightarrow{p} \theta$)
+\end{itemize}
+
+\textbf{2. Convergence in Distribution:} $X_n \xrightarrow{d} X$
+\begin{itemize}[leftmargin=*]
+  \item CDF of $X_n$ converges to CDF of $X$
+  \item Used in asymptotic approximations (e.g., CLT: $\sqrt{n}(\bar{X}_n - \mu) \xrightarrow{d} \mathcal{N}(0, \sigma^2)$)
+\end{itemize}
+
+\textbf{3. Convergence in Mean Square (L2):} $X_n \xrightarrow{L^2} X$
+\begin{itemize}[leftmargin=*]
+  \item $\mathbb{E}[(X_n - X)^2] \to 0$
+  \item Implies convergence in probability
+\end{itemize}
+
+\textbf{4. Almost Sure Convergence:} $X_n \xrightarrow{a.s.} X$
+\begin{itemize}[leftmargin=*]
+  \item $\mathbb{P}(\lim_{n \to \infty} X_n = X) = 1$
+  \item Strongest form of convergence
+\end{itemize}
+
+\textbf{Difference with Expected Value:}
+\begin{itemize}[leftmargin=*]
+  \item $\mathbb{E}[X_n] \to \mathbb{E}[X]$ (not a type of convergence of RVs)
+  \item Convergence in distribution does NOT imply convergence of expectations
+\end{itemize}
+
+
+\subsection{Two-Sample Mean Test (CLT-based)}
+
+Compare two i.i.d. samples (with known variances:
+\begin{itemize}[leftmargin=*]
+  \item $m_1, \dots, m_{n_m} \sim (\mu_m, \sigma^2_m)$
+  \item $w_1, \dots, w_{n_w} \sim (\mu_w, \sigma^2_w)$
+\end{itemize}
+
+Then by CLT:
+$\bar{m} - \bar{w} \sim \mathcal{N}\left(\mu_m - \mu_w, \sigma^2\right),
+\quad \text{with} \quad 
+\sigma^2 = \frac{\sigma^2_m}{n_m} + \frac{\sigma^2_w}{n_w}$
+
+{\tiny Use this for constructing confidence intervals or performing a two-sided $H_0: \mu_m = \mu_w$ test.}
+
+
+\textbf{Two-Sample $t$-Test (Unequal Variances)}\\
+If sample size < 30 : use this, otherwise can be approximated with normal comparison of mean\\
+Test $H_0: \mu_m = \mu_w$ based on:
+$\frac{\bar{m} - \bar{w}}{\sqrt{\frac{s^2_m}{n_m} + \frac{s^2_w}{n_w}}} 
+\sim t_{\nu} \quad \text{(approx)}$ \\
+with Welch’s degrees of freedom:
+$\nu = \frac{\left(\frac{s^2_m}{n_m} + \frac{s^2_w}{n_w}\right)^2}{\frac{(s^2_m/n_m)^2}{n_m - 1} + \frac{(s^2_w/n_w)^2}{n_w - 1}}$
+
+\subsection{Chebyshev's Inequality}
+
+Let $X$ be a random variable and $c \in \mathbb{R}$ (typically the mean or median).  
+If $\mathbb{E}(|X - c|^r) < \infty$ for some $r > 0$, then for all $\varepsilon > 0$: \\
+$\mathbb{P}(|X - c| > \varepsilon) \leq \frac{\mathbb{E}(|X - c|^r)}{\varepsilon^r}$
+
+If $r = 2$ and $X$ has finite variance, then:\\
+$\mathbb{P}(|X - \mu| > \varepsilon) \leq \frac{\mathrm{Var}(X)}{\varepsilon^2}$
+
+\textit{Use: Bounds tail probabilities; proves convergence in probability (LLN).}
+
+
+\subsection{Markov's Inequality}
+
+Let $X$ be a non-negative random variable with $\mathbb{E}[X] < \infty$. Then for any $a > 0$:
+
+$\boxed{
+\mathbb{P}(X \ge a) \le \frac{\mathbb{E}[X]}{a}
+}$
+
+\textit{Interpretation: }  
+Upper bound on the probability that $X$ exceeds a threshold, using only the mean.
+
+
+\subsection{Bias, Constitency: }
+
+\textbf{Bias vs Consistency:}
+\begin{itemize}[leftmargin=*]
+  \item An estimator $\hat{\theta}$ is \textbf{unbiased} for $\theta$ if $\mathbb{E}[\hat{\theta}] = \theta$.
+  \item An estimator $\hat{\theta}_n$ is \textbf{consistent} for $\theta$ if $\hat{\theta}_n \xrightarrow{p} \theta$ as $n \to \infty$.
+  \item Bias is a finite-sample property, while consistency is an asymptotic property.
+\end{itemize}\\
+
+\textbf{Bias:} $\mathrm{Bias}(\hat{\theta}) = \mathbb{E}[\hat{\theta}] - \theta$ \\
+\textbf{Unbiasedness:} $\mathbb{E}[\hat{\theta}] = \theta$ \\
+\textbf{Expected squared error:} $\mathrm{MSE}(\hat{\theta}) = (\mathbb{E}[\hat{\theta} - \theta]^2) = \mathrm{Var}(\hat{\theta}) + [\mathrm{Bias}(\hat{\theta})]^2$ \\
+\textbf{Consistency:} $\hat{\theta}_n \xrightarrow{p} \theta$ as $n \to \infty$\\
+\textbf{Good estimator: } low variance and low expected bias
+
+\section{Linear Regression}
+
+\subsection{Linear Regression Model (Matrix Form)}
+
+$y_i = \boldsymbol\beta'x_i + \varepsilon_i$ \quad (for $i=1,\dots,n$)
+
+If $x_{i1} = 1$ for all $i$, then $\beta_1$ is the intercept.
+
+\vspace{0.3em}
+\textbf{Matrix form:} $\mathbf{y} = \mathbf{X} \boldsymbol\beta + \boldsymbol\varepsilon$
+
+\vspace{0.3em}
+\subsection{Key Matrices in Regression}
+
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Symbol} & \textbf{Description} & \textbf{Form / Dimensions} \\
+\hline
+$y$ & Outcome vector & $n \times 1$ \\
+$X$ & Design matrix & $n \times k$ \\
+$\beta$ & Coefficient vector & $k \times 1$, unknown \\
+$b$ & OLS estimator & $k \times 1$, $b = (X'X)^{-1}X'y$ \\
+$\hat{y}$ & Predicted values & $n \times 1$, $\hat{y} = Xb$ \\
+$e$ & Residuals & $n \times 1$, $e = y - \hat{y}$ \\
+$\varepsilon$ & Errors & $n \times 1$, $y = X\beta + \varepsilon$ \\
+$H$ & Hat matrix & $n \times n$, $H = X(X'X)^{-1}X'$ \\
+$M$ & Residual maker & $n \times n$, $M = I_n - H$ \\
+$M^0$ & Mean-centering matrix & $M^0 = I_n - \frac{1}{n} \mathbf{1}_n\mathbf{1}_n'$ \\
+$P$ & Projection matrix & $P = X(X'X)^{-1}X' = H$ \\
+$s^2$ & Estimator of $\sigma^2$ & $\frac{e'e}{n - k}$ \\
+$Z$ & Instrumental variable matrix & $n \times l$, $l \ge k$ \\
+$P_Z$ & Projection on $Z$ & $P_Z = Z(Z'Z)^{-1}Z'$ \\
+\hline
+\end{tabular}
+
+
+\subsection{OLS Estimation }
+
+Objective: minimize residual sum of squares  $f(b) = (y - Xb)'(y - Xb) = e'e$\\
+
+First-order condition:\\
+$\frac{\partial f}{\partial b} = -2X'y + 2X'Xb = 0 
+\Rightarrow X'Xb = X'y
+\Rightarrow \boxed{b = (X'X)^{-1}X'y}$\\
+
+Also:  $b = \beta + (X'X)^{-1}X'\varepsilon \quad \text{(under assumption 1)}$\\
+
+
+Consistency (as $n \to \infty$): \\
+If assumptions 1–2 hold and \( \frac{1}{n} X'X \xrightarrow{p} Q \succ 0 \),  
+then:\\
+$(X'X)^{-1}X'\varepsilon \xrightarrow{p} 0
+\quad \Rightarrow \quad
+b \xrightarrow{p} \beta$ (we can say b=$\beta$)\\
+
+\textbf{Assumptions: }\\
+1. Full rank: $\mathrm{rank}(X) = k$ (no perfect collinearity)
+x
+2. Exogeneity: $\mathbb{E}[\varepsilon_i | X] = 0$
+
+3. Homoskedasticity: $\mathrm{Var}(\varepsilon_i | X) = \sigma^2$ constant
+
+4. No autocorrelation: $\mathrm{Cov}(\varepsilon_i, \varepsilon_j | X) = 0$ for $i \ne j$
+
+5. Normality (optional): $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$\\
+
+\textbf{Consequences:}
+\begin{itemize}[leftmargin=*]
+    \item  $\mathbb{C}orr(x_{ij}\varepsilon_{i})=0 \text{ and }\mathbb{E}(\varepsilon_{i})=0$ under 2,
+    \item $\mathrm{Var}(\varepsilon | X) = \sigma^2 I_n$ under 3-4,
+    \item \textbf{$\mathbb{E}[b|X] = \beta$} $b$ is unbiased, under 1-2, 
+    \item $\sqrt{n}(b - \beta) \xrightarrow{d} \mathcal{N}(0,\, \sigma^2 Q^{-1})$ under 1-4 and $\frac{1}{n} X'X \xrightarrow{p} Q$
+    \item \textbf{$\mathrm{Var}(b | X) = \sigma^2 (X'X)^{-1}$}, which is the \textbf{variance-covariance matrix}, under 1-4.
+    \begin{itemize}
+        \item Diagonal elements: variances of the estimated coefficients.
+        \item Off-diagonal elements: covariances between coefficients.
+    \end{itemize}
+    \item $s^2 = \widehat{\sigma}^2 = \frac{e'e}{n - k}\xrightarrow{p} \sigma^2$, under 1-4,
+    \begin{itemize}
+        \item \textcolor{red}{$s^2$ is NOT normally distributed, even for large $n$.}
+        \item with $k =$ df = number of regressors (incl. intercept)
+        \item $\mathbb{E}(s^2 \mid \mathbf{X}) = \sigma^2$ (unbiased estimator).
+    \end{itemize}
+    \item $(n - K)\frac{s^2}{\sigma^2} |\mathrm{X} \sim \chi^2_{n - K} \quad \Rightarrow \quad s^2 \text{ is a scaled chi-squared variable.}$
+    \item $X'e=0$ is a mechanical result of the OLS first-order conditions and holds by construction, even if the exogeneity (assumption 2) fails.
+\end{itemize}\\
+
+
+
+
+\textbf{Gauss-Markov Theorem (BLUE):}  
+If assumptions 1–4 hold, $b$ is the Best Linear Unbiased Estimator of $\beta$.\\
+The "Linear" in BLUE explicitly means the estimator b is linear in y
+
+Warning: This does not refer to the model being linear in variables. The model $y = X\beta + e$ is assumed linear in parameters, but "linear" in BLUE is about the estimator’s form.\\
+
+\textbf{Frisch–Waugh–Lovell Theorem}
+
+Goal: Estimate \( \mathbf{b}_2 \) from the model \( \mathbf{y} = \mathbf{X}_1 \boldsymbol{\beta}_1 + \mathbf{X}_2 \boldsymbol{\beta}_2 + \boldsymbol{\varepsilon} \) after accounting for $\mathbf{X}_1$
+
+Theorem: The coefficient \( \mathbf{b}_2 \) from the full regression is the same as the coefficient from the regression:
+$\boxed{\mathbf{b}_2 = \left(\mathbf{X}_2' \mathbf{M}^{\mathbf{X}_1} \mathbf{X}_2\right)^{-1} \mathbf{X}_2' \mathbf{M}^{\mathbf{X}_1} \mathbf{y}}$\\
+
+Interpretation:
+\begin{itemize}[leftmargin=*]
+  \item Remove the part of \( \mathbf{y} \) explained by \( \mathbf{X}_1 \) to get residuals: \( \mathbf{y}^* = \mathbf{M}^{\mathbf{X}_1} \mathbf{y} \)
+  \item Remove the part of \( \mathbf{X}_2 \) explained by \( \mathbf{X}_1 \): \( \mathbf{X}_2^* = \mathbf{M}^{\mathbf{X}_1} \mathbf{X}_2 \)
+  \item Regress \( \mathbf{y}^* \) on \( \mathbf{X}_2^* \):  
+  \[
+  \boxed{\mathbf{b}_2 = \frac{(\mathbf{X}_2^*)' \mathbf{y}^*}{(\mathbf{X}_2^*)' \mathbf{X}_2^*}}
+  \]
+\end{itemize}
+
+Matrix Definitions:
+\begin{itemize}[leftmargin=*]
+  \item \( \mathbf{X}_1 \in \mathbb{R}^{n \times k_1} \): Matrix of control regressors (e.g., dummies)
+  \item \( \mathbf{X}_2 \in \mathbb{R}^{n \times k_2} \): Regressor(s) of interest
+  \item \( \mathbf{M}^{\mathbf{X}_1} = \mathbf{I}_n - \mathbf{X}_1 (\mathbf{X}_1' \mathbf{X}_1)^{-1} \mathbf{X}_1' \): Residual-maker matrix projecting orthogonally to \( \mathbf{X}_1 \)
+  \item \( \mathbf{y}^* = \mathbf{M}^{\mathbf{X}_1} \mathbf{y} \): Residuals from regressing \( \mathbf{y} \) on \( \mathbf{X}_1 \)
+  \item \( \mathbf{X}_2^* = \mathbf{M}^{\mathbf{X}_1} \mathbf{X}_2 \): Residuals from regressing \( \mathbf{X}_2 \) on \( \mathbf{X}_1 \)
+\end{itemize}
+
+
+
+
+\subsection{Projection \& Residual Matrices}
+
+\textbf{Hat matrix:} $\hat{y} = Py = Xb$\\
+We can also note that $y = \hat{y} + e$\\
+
+\textbf{Projection Matrix: }$P = X(X'X)^{-1}X'$\\
+We can also note that $\hat{y} = Py$\\
+
+\textbf{Residual Maker Matrix:} $e = My$, \quad $M = I_n - P$\\
+We can also note that $My = e = y - Xb$\\
+
+\textbf{Properties of P and M:}
+\begin{itemize}[leftmargin=*]
+  \item $P, M$ are symmetric $(A = A')$, idempotent $(A = A^k, \quad \forall k > 0)$ 
+  \item $PX = X$, $MX = 0$
+  \item $PM = MP = 0$
+  \item $My = Me$
+  \item $y = Py + My$, decomposition of y in two orthogonal parts
+\end{itemize}
+
+
+\textbf{Key Property: Orthogonality of residuals (OLS projection result)}
+
+The residuals $e = y - Xb$ are \textbf{orthogonal to all regressors in $X$}:
+
+$X'e = 0 \quad \Leftrightarrow \quad 
+\sum_{i=1}^{n} x_{ij} e_i = 0 \text{ for each regressor } j$
+
+That implies:
+\begin{itemize}[leftmargin=*]
+  \item $\sum e_i = 0$ (orthogonal to the intercept, (\textcolor{red}{CONDITIONAL ON HAVING AN INTERCEPT}))
+  \item $\sum z_i e_i = 0$, $\sum w_i e_i = 0$, etc.
+\end{itemize}
+
+\textit{This comes from the first-order condition of the OLS minimization problem.}
+
+\item $\boxed{X'e = 0}$ (residuals orthogonal to regressors)
+
+
+\subsection{Regression Specifications (How to interpret $\beta_j$)}\\
+
+Continuous: \\
+$y = \beta_0 + \beta_j x_j + \varepsilon$  
+  $\Rightarrow$ 1 unit increase in $x_j$ → $\beta_j$ change in $y$\\
+  
+Dummy (binary): \\
+$y = \beta_0 + \beta_j D_j + \varepsilon$ $\Rightarrow$ $D_j = 1$ vs $D_j = 0$ → $\beta_j$ change in $y$\\
+
+Log-Linear: \\
+$\log(y) = \beta_0 + \beta_j x_j + \varepsilon$  $\Rightarrow$ 1 unit increase in $x_j$ → $\beta_j \cdot 100$\% change in $y$\\
+
+Linear-Log: \\
+$y = \beta_0 + \beta_j \log(x_j) + \varepsilon$  $\Rightarrow$ 1\% increase in $x_j$ → $\frac{\beta_j}{100}$ change in $y$\\
+  
+Log-Log: \\
+$\log(y) = \beta_0 + \beta_j \log(x_j) + \varepsilon$  $\Rightarrow$ 1\% increase in $x_j$ → $\beta_j$\% change in $y$
+
+
+\subsection{Goodness of Fit}
+
+\textbf{Total Sum of Squares:}  \\
+$TSS = \sum (y_i - \bar{y})^2 = y'M^0 y$\\
+The TSS can be imagined as a sum of squared residuals on a regression with only a constant equal to $\bar{y}$.\\
+
+\textbf{Explained Sum of Squares (ESS):}  \\
+$ESS = \sum_{i=1}^n (\hat{y}_i - \bar{y})^2 
+= b' X' M^0 X b$\\
+
+\textbf{Residual Sum of Squares (SSR):}  \\
+$SSR = \sum_{i=1}^n (y_i - \hat{y}_i)^2 
+= e'e = (y - Xb)'(y - Xb)$\\
+
+\textbf{Decomposition:}  
+$TSS = ESS + SSR$\\
+
+\textbf{Coefficient of Determination:}\\
+$R^2 = \frac{ESS}{TSS} = 1 - \frac{SSR}{TSS} = 1 - \frac{e'e}{y'M^0 y}$ \\
+\textit{Note: } $R^2$ does not penalize irrelevant regressors — prefer $\bar{R}^2$, AIC, or BIC for model selection. \\
+
+\textbf{Asymptotic Limit of $R^2$:}  
+Even as $n \to \infty$, $R^2 < 1$ if $\sigma^2 > 0$ (irreducible noise in $y$).  
+$\Rightarrow$ $\hat{\beta} \xrightarrow{p} \beta$ but $y$ still noisy.  
+
+
+
+\textbf{Adjusted $R^2$:}\\
+$\bar{R}^2 = 1 - \frac{e'e / (n - k)}{y'M^0 y / (n - 1)} = 1 - \frac{n - 1}{n - k}(1 - R^2)$\\
+
+\textbf{Change in $R^2$ from adding variable $z$:}\\
+$R^2_{X,z} = R^2_X + (1 - R^2_X)(r_{yz}^X)^2$
+{\tiny One instrument per endogenous regressor ⇒ system is just identified. Use standard IV formula.}
+
+
+\subsection{Common Pitfalls in Linear Regression}
+
+\textbf{1. Multicollinearity}
+\begin{itemize}[leftmargin=*]
+  \item Occurs when some regressors are nearly linear combinations of others.
+  \item Leads to large variances of OLS estimators → wide confidence intervals.
+  \item Reduces power of $t$-tests → harder to reject $H_0: \beta_j = 0$.
+  \item Example: if $\mathrm{Corr}(x_1, x_2)$ close to 1, variance of $b_1$ inflates.
+  \item Variance of $b_j$: $s^2 \cdot [(X'X)^{-1}]_{jj}$ increases when $X$ has high collinearity.
+\end{itemize}
+
+---
+\textbf{2. Omitted Variable Bias}
+\begin{itemize}[leftmargin=*]
+  \item Suppose the \textbf{true model:} $y = X_1\beta_1 + X_2\beta_2 + \varepsilon$, but you estimate: $b_1 = (X_1'X_1)^{-1}X_1'y \Rightarrow \mathbb{E}[b_1 | X] = \beta_1 + (X_1'X_1)^{-1} X_1'X_2 \beta_2$
+  \item If $X_1'X_2 \ne 0$ (no orthogonality, linear dependence) and $\beta_2 \ne 0$, $b_1$ is biased.
+  \item Intuition: $X_1$ “captures” the effect of omitted $X_2$
+  \item Remedy: include control variables (i.e., add $X_2$ to the regression)
+\end{itemize}
+
+---
+
+\textbf{3. Irrelevant Variables (Overfitting)}
+\begin{itemize}[leftmargin=*]
+  \item Suppose the true model is: $y = X_1\beta_1 + \varepsilon$
+  but you estimate:
+  $y = X_1\beta_1 + X_2\beta_2 + \varepsilon
+  \quad \text{with } \beta_2 = 0$
+  \item Estimates are still unbiased.
+  \item But adding irrelevant $X_2$ increases the variance of $b_1$
+  \item Leads to inefficiency and reduced test power (higher risk of Type II errors)
+  \item Adjusted $R^2$ and AIC/BIC help guard against overfitting
+\end{itemize}
+
+\subsection{Instrumental Variables (IV)}
+
+If $\mathbb{E}[\varepsilon_i | x_i] \ne 0$, then $x_i$ is endogenous,
+and OLS is no longer consistent.
+
+\textbf{Why?}
+$b = \beta + (X'X)^{-1} X'\varepsilon
+\quad \Rightarrow \quad
+b \xrightarrow{p} \beta + Q_{xx}^{-1} \gamma \ne \beta
+\quad \text{with } \gamma = \mathbb{E}[x_i \varepsilon_i]$\\
+{\tiny\textit{Here, } $Q_{xx} = \plim \frac{X'X}{n}$ is the probability limit of the scaled Gram matrix — it represents the asymptotic second moment matrix of the regressors. Its inverse, $Q_{xx}^{-1}$, appears in the asymptotic bias term and plays a role similar to $(X'X)^{-1}$ in finite samples.}
+
+
+\textbf{Remedy: Instrumental Variables (IV)}  
+Use valid instruments $z_i$ such that:
+$\mathbb{E}[\varepsilon_i | z_i] = 0
+\quad \text{and} \quad \mathrm{Cov}(z_i, x_i) \ne 0$
+
+---
+
+\textbf{Valid instruments $z_i$ satisfy:}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Relevance:} $\mathrm{Cov}(z_i, x_i) \ne 0$
+  \item \textbf{Exogeneity:} $\mathbb{E}[\varepsilon_i | z_i] = 0$
+  \item No multicollinearity in projected $X$ on $Z$
+  \textit{Why?} To ensure that $(Z'X)$ is invertible and that all parameters in $\beta$ are identified. $\Rightarrow$ Without this, $b_{IV}$ is undefined (underidentified model).
+\end{itemize}
+
+---
+
+\textbf{Just-identified IV estimator} ($L = K$): \\
+One instrument per endogenous regressor ⇒ system is just identified. Use standard IV formula.\\
+$\boxed{b_{IV} = (Z'X)^{-1} Z'y}$\\
+\textbf{Wald estimator = IV estimator} in the special case with:\\
+- One endogenous regressor \( x_i \)\\
+- One binary instrument \( z_i \)\\
+Then: \( \hat{\beta}_{\text{Wald}} = \frac{\text{Cov}(z_i, y_i)}{\text{Cov}(z_i, x_i)} \)
+
+\textit{More general cases ⇒ use full IV or 2SLS formula.}\\
+
+\textbf{Asymptotic distribution (if $L = K$):}
+$b_{IV} \overset{d}{\rightarrow} 
+\mathcal{N}\left(\beta, \frac{\sigma^2}{n} [Q_{xz} Q_{zz}^{-1} Q_{zx}]^{-1}\right)$
+
+Where:
+$Q_{xz} = \plim \frac{X'Z}{n}, \quad 
+Q_{zx} = \plim \frac{Z'X}{n}, \quad 
+Q_{zz} = \plim \frac{Z'Z}{n}$
+
+Estimate variance in practice:
+$\widehat{\mathrm{Var}}(b_{IV}) = s^2_{IV} \cdot Q_{zx}^{-1} Q_{zz} Q_{xz}^{-1}
+\quad \text{with } s^2_{IV} = \frac{1}{n} \sum (y_i - x_i' b_{IV})^2$
+
+
+---
+
+\textbf{Overidentified case ($L > K$): 2SLS}\\
+More instruments than regressors ⇒ overidentified system. Project $X$ on $Z$, then regress $y$ on $\hat{X}$.
+
+
+Steps:\\
+1. Regress $X$ on $Z$: $\hat{X} = P_Z X$ with $P_Z = Z(Z'Z)^{-1}Z'$\\
+2. Regress $y$ on $\hat{X}$
+
+\textbf{2SLS estimator:}
+$\boxed{
+b_{2SLS} = (X'P_Z X)^{-1} X'P_Z y
+}$
+
+---
+
+\textbf{Weak instruments: }\\
+- Instruments only weakly correlated with $x_i$ (relevance not resepcted)\\
+- Check: \textbf{F-statistic from first stage} regression. Low $F$ ⇒ weak instruments
+
+
+\subsection{Inference and Confidence Intervals}
+
+\textbf{Under assumptions 4.1–4.5 (including normality):}\\
+$\mathbf{b} | X \sim \mathcal{N}\left(\boldsymbol\beta,\, \sigma^2 (X'X)^{-1}\right)$\\
+$s^2 = \widehat{\sigma}^2 = \frac{e'e}{n - k}\xrightarrow{p} \sigma^2)$ (under 1-4)\\
+with $k =$ df = number of regressors (incl. intercept)\\
+
+\textbf{Distribution of }$b_k$ (component of $\mathbf{b}, \sigma^2$ known): \\
+$b_k \mid X \sim \mathcal{N}\left(\beta_k, \sigma^2 v_k\right)$ \\
+$\sqrt{n}\frac{b_k-\beta_k}{\sqrt{\sigma^2 v_k}} \mid X \sim \mathcal{N}\left(0, 1\right)$\\
+\textbf{Distribution of }$b_k$ (component of $\mathbf{b}, \sigma^2$ unknown): \\
+$\sqrt{n}\frac{b_k-\beta_k}{\sqrt{s^2 v_k}} \mid X \sim t\left(n-k)$\\
+
+$\text{with } v_k = [(X'X)^{-1}]_{kk}$, which means: the $k$-th diagonal element of the matrix $(X'X)^{-1}$, and is the variance weight associated with the $k$-th coefficient $b_k$\\
+
+\textbf{t-statistic:}\\
+$t_k = \frac{\frac{b_k - \beta_k}{\sqrt{\sigma^2 v_k}}}{\sqrt{\frac{(n-K)s^2}{\sigma^2(n-K)}}} = \frac{b_k - \beta_k}{\sqrt{s^2v_k}} \sim t(n-K)$\\
+
+\textbf{t-Test Requirements:}
+\begin{itemize}
+    \item Gauss-Markov (Assumptions 1–4) \textbf{are insufficient} for valid \( t \)-tests in small samples. 
+    \item \textbf{Normality} (Assumption 5: \( \varepsilon \sim \mathcal{N}(0, \sigma^2) \)) is strictly required for exact \( t \)-distributions in finite samples. 
+    \item Without normality, \( t \)-tests rely on asymptotic approximations (CLT).
+\end{itemize}
+
+\textbf{Confidence interval for $b_k$ at $1-\alpha\%$ : } \\
+$[b_k \pm t_{1-\frac{\alpha}{2}, n-k} \cdot \sqrt{s^2 v_k}]$\\
+We use $\mathcal{N}(0, 1)$ quantiles as $n \rightarrow \infty$ (CLT) \\
+
+\textbf{Inference on linear combinations:}  
+Let $\alpha' b$ estimate $\alpha' \beta$:
+
+$\alpha' b \mid X \sim \mathcal{N}(\alpha' \beta, \sigma^2 \alpha' (X'X)^{-1} \alpha)$
+
+$\Rightarrow \frac{\alpha' b - \alpha' \beta}{\sqrt{s^2 \alpha' (X'X)^{-1} \alpha}} \sim t(n - k)$\\
+
+
+\subsection{Hypothesis Testing: }
+
+We test hypotheses about parameters $\theta$ (imperfectly observed) using data $\mathbf{x}$ whose distribution depends on $\theta$.
+
+\textbf{Null and alternative hypotheses:} \\
+$H_0: \theta \in \Theta_0$ \quad vs. \quad $H_1: \theta \in \Theta_1 = \Theta_0^c$ \\
+(or equivalently, $H_0: h(\theta) = 0$)
+
+\textbf{A statistical test requires:}
+\begin{itemize}[leftmargin=*]
+  \item a parameter vector $\theta$ (partially or fully unknown)
+  \item a test statistic $S(\mathbf{x})$ (function of the sample)
+  \item a critical region $\Omega$ (set of implausible values under $H_0$)
+\end{itemize}
+
+\textbf{Decision rule:}
+\begin{itemize}[leftmargin=*]
+  \item Reject $H_0$ if $S(\mathbf{x}) \in \Omega$
+  \item Fail to reject $H_0$ if $S(\mathbf{x}) \notin \Omega$
+\end{itemize}
+
+\textbf{Errors and test performance:}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Type I error (false positive):} reject $H_0$ when true ($\alpha$)
+  \item \textbf{Type II error (false negative):} fail to reject $H_0$ when false ($\beta$)
+  \item \textbf{Power:} $\gamma = 1 - \beta$ $ \rightarrow 1$ as $n \rightarrow \infty$ \quad (probability of correctly rejecting $H_0$) 
+\end{itemize}
+
+\textbf{Error probabilities:}\\
+$\alpha = \mathbb{P}(S \in \Omega \mid H_0) \quad\quad
+\beta = \mathbb{P}(S \notin \Omega \mid H_1)$\\
+\textit{\textcolor{red}{Note: There is often a tradeoff between $\alpha$ and power ($1 - \beta$)}}
+\begin{center}
+{
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Decision / Truth} & \textbf{$H_0$ True} & \textbf{$H_0$ False} \\
+\hline
+Not rejected & 
+\textbf{Correct decision}  ($1 - \alpha$) &
+\textbf{Type II error} ($\beta$) \\
+\hline
+Rejected & 
+\textbf{Type I error} ($\alpha$) &
+\textbf{Correct decision} ($1 - \beta$) \\
+\hline
+\end{tabular}
+}
+\end{center}
+
+
+
+
+\subsection{Common Tests: }
+
+
+\textbf{Generic Setup:}  
+Let $S_n$ be a test statistic that (under $H_0$) follows a known distribution $D$, or compare $S_n$ to quantiles of $D$ at level $\alpha$. \\
+
+\textbf{p-value: }
+Reject $H_0$ at level $\alpha$ if $p < \alpha$
+
+\textbf{1. Student’s $t$-distribution:}
+Arises when: $\hat{\theta}$ is normally distributed with variance estimated from sample\\
+Assumptions: i.i.d. observations, normality (or large $n$), unknown variance\\
+Statistic: 
+  $T = \frac{\hat{\theta} - \theta_0}{\widehat{\mathrm{SE}}(\hat{\theta})} \sim t_{df}$\\
+Reject $H_0$ if: $|T| > t_{\alpha/2, df}$ (two-sided) or $T > t_{\alpha, df}$ (one-sided)\\
+
+
+\textbf{2. Chi-squared ($\chi^2$) distribution:}\\
+Arises when: testing variance, goodness-of-fit, or quadratic forms in normals\\
+Statistic:
+  $\chi^2 = \sum_{i=1}^k \left(\frac{O_i - E_i}{\sqrt{E_i}}\right)^2 
+  \quad \text{or} \quad \hat{\varepsilon}' A \hat{\varepsilon}$\\
+Degrees of freedom = number of independent components\\
+Reject $H_0$ if: $\chi^2_{\text{obs}} > \chi^2_{\alpha, df}$\\
+
+
+\textbf{3. F-Test}\\
+When used: To test joint linear restrictions (e.g. $H_0: R\beta = q$), compare models, or test variance equality.
+
+General formula (Wald-based):  \\
+$F = \frac{(Rb - q)' [R(X'X)^{-1}R']^{-1} (Rb - q)}{J s^2}
+\sim \mathcal{F}(J, n - k)$
+
+Alternative formula (SSR-based):  \\
+$F = \frac{(SSR_{restr} - SSR_{unrestr}) / J}{SSR_{unrestr} / (n - k)}
+= \frac{(R^2 - R_*^2)/J}{(1 - R^2)/(n - k)}$\\
+Where $SSR_{restr}$ is the model under $H_0$
+
+Degrees of freedom:
+\begin{itemize}[leftmargin=*]
+  \item $J$ = number of restrictions (numerator df)
+  \item $n - k$ = number of residual df (denominator)
+\end{itemize}
+Reject $H_0$ if $F_{\text{obs}} > F_{\alpha, J, n - k}$
+
+Asymptotic approx (large $n - k$):
+$F(J, \infty) \approx \chi^2(J)/J$ → Wald and $F$ converge.
+
+\textcolor{red}{Caution (CLT misconception):}  
+Even as $n \to \infty$, $F$-distributions do \textbf{not} converge to Normal.  
+$F$ is a ratio of $\chi^2$ variables ⇒ the CLT does not apply.\\
+
+\textbf{4. Standard Normal ($\mathcal{N}(0,1)$):}\\
+Arises when: variance is known, or from large sample CLTs\\
+Statistic: $Z = \frac{\hat{\theta} - \theta_0}{\mathrm{SE}(\hat{\theta})} \sim \mathcal{N}(0,1)$\\
+Reject $H_0$ if: $|Z| > z_{\alpha/2}$ (two-sided) or $Z > z_{\alpha}$ (one-sided)
+
+Critical values for $\mathcal{N}(0,1)$:
+
+\begin{tabular}{|c|c|c|}
+\hline
+Significance Level $\alpha$ & $z_{\alpha}$ (one-sided) & $z_{\alpha/2}$ (two-sided) \\
+\hline
+0.10 & 1.28 & 1.64 \\
+0.05 & 1.645 & 1.96 \\
+0.01 & 2.33 & 2.58 \\
+0.001 & 3.09 & 3.29 \\
+\hline
+\end{tabular}
+\\
+
+\textbf{5. Jarque-Bera Test (Normality):}\\
+Tests whether a sample's skewness and kurtosis match those of a normal distribution
+
+Under $H_0$: $Y_i \sim \mathcal{N}(\mu, \sigma^2)$, so:
+  $g_3 \to 0$, $g_4 \to 3$
+Asymptotic properties:
+    \begin{itemize}
+      \item $\sqrt{n} g_3 \xrightarrow{d} \mathcal{N}(0, 6)$
+      \item $\sqrt{n}(g_4 - 3) \xrightarrow{d} \mathcal{N}(0, 24)$
+    \end{itemize}\\
+    
+JB Statistic:
+  $JB = \frac{n}{6} \left(g_3^2 + \frac{(g_4 - 3)^2}{4}\right)$ where $g_3, g_4$ are standardized sample moments\\
+Under $H_0$, $JB \xrightarrow{d} \chi^2(2)$\\
+
+
+
+\textbf{6. Durbin–Wu–Hausman Test (for endogeneity):}
+
+Test whether OLS is inconsistent and IV is necessary.\\
+$H = (b_{IV} - b_{OLS})' \left[\widehat{\mathrm{Var}}(b_{IV}) - \widehat{\mathrm{Var}}(b_{OLS})\right]^{+} (b_{IV} - b_{OLS})$
+
+Where:\\
+- \( + \) = Moore-Penrose pseudo-inverse (in case matrix isn't full rank) \\
+- Under $H_0$: both estimators are consistent (OLS preferred for efficiency)\\
+- Under $H_0$: $H \sim \chi^2(q)$, where \(q\) is the rank of \(\mathrm{Var}(\mathbf{b}_1) - \mathrm{Var}(\mathbf{b}_0)\)
+- Under $H_1$: only IV is consistent (OLS is biased)  
+
+\textit{Rejecting \(H_0\) ⇒ OLS inconsistent ⇒ prefer IV.}
+
+
+\subsection{Testing Linear Restrictions (F-test)}
+
+Test joint restrictions: $H_0: R\beta = q \quad \text{vs.} \quad H_1: R\beta \ne q$
+
+\textbf{Discrepancy vector:} $m = Rb - q$  \\
+\textbf{Under $H_0$:} $\mathbb{E}[m | X] = 0$ \\
+\textbf{Variance:} (Under 4.1–4.4) $\mathrm{Var}(m | X) = \sigma^2 R (X'X)^{-1} R'$
+
+
+\textbf{Wald statistic ($\sigma^2$ known:) }\\
+$W = m' \left[\mathrm{Var}(m | X)\right]^{-1} m 
+= \frac{m' [R (X'X)^{-1} R']^{-1} m}{\sigma^2} \sim \chi^2(J)$\\
+\textbf{F statistic (when $\sigma^2$ is unknown, use $s^2$):}\\
+$F = \frac{1}{J} \cdot \frac{m' [R (X'X)^{-1} R']^{-1} m}{s^2} \sim F(J, n - K)$\\
+
+We can use the SSR (alternative) formula (see F-test). The restricted SSR is the one of the test, with less parameters, i.e. the one under $H_0$.
+
+}
