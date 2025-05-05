@@ -1,2 +1,2 @@
 # Statistics-and-Econometrics-Cheat-Sheet
-UNIL Stats&amp;Econ course cheat sheet built by me ! :P
+UNIL HEC 3rd year Stats&amp;Econ course cheat sheet built by me ! :P
